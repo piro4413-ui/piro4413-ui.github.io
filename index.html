@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hiroshi Studio</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+    background: linear-gradient(135deg, #FFF8E1 0%, #FFE0B2 100%);
+    min-height: 100vh;
+    color: #5D4037;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .container {
+    max-width: 600px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(93, 64, 55, 0.1);
+    backdrop-filter: blur(10px);
+  }
+  .logo {
+    font-size: 36px;
+    font-weight: 900;
+    color: #E91E63;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .tagline {
+    font-size: 14px;
+    color: #8D6E63;
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+  .section {
+    margin-bottom: 32px;
+  }
+  h2 {
+    font-size: 18px;
+    color: #5D4037;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .description {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #6D4C41;
+    margin-bottom: 16px;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .link-card {
+    background: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #5D4037;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .link-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .link-card-title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .link-card-desc {
+    font-size: 11px;
+    color: #8D6E63;
+    margin-top: 2px;
+  }
+  .link-card-content {
+    text-align: left;
+  }
+  .arrow {
+    color: #E91E63;
+    font-size: 20px;
+  }
+  .app-card {
+    background: linear-gradient(135deg, #E91E63 0%, #FF6F00 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: block;
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.3);
+  }
+  .app-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+  }
+  .app-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .app-card-icon {
+    font-size: 28px;
+  }
+  .app-card-title {
+    font-size: 16px;
+    font-weight: 700;
+    flex: 1;
+    text-align: left;
+  }
+  .app-card-subtitle {
+    font-size: 12px;
+    opacity: 0.9;
+    text-align: left;
+    margin-bottom: 12px;
+  }
+  .app-card-badge {
+    display: inline-block;
+    background: white;
+    color: #E91E63;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .footer {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(141, 110, 99, 0.2);
+    font-size: 12px;
+    color: #8D6E63;
+  }
+  .footer a {
+    color: #E91E63;
+    text-decoration: none;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 30px 20px; }
+    .logo { font-size: 28px; }
+    h2 { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Hiroshi Studio</div>
+    <div class="tagline">Indie App Development from Japan</div>
+
+    <div class="section">
+      <p class="description">
+        日々の生活に小さな彩りを添える<br>
+        モバイルアプリを作っています。
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>📱 アプリ / Our Apps</h2>
+      <a href="https://play.google.com/store/apps/details?id=com.hiroshistudio.brain_mahjong" class="app-card">
+        <div class="app-card-header">
+          <span class="app-card-icon">🀄</span>
+          <span class="app-card-title">脳トレ麻雀パズル</span>
+        </div>
+        <div class="app-card-subtitle">
+          Brain Mahjong Puzzle - Mahjong Solitaire & Shisen-Sho
+        </div>
+        <div class="app-card-badge">
+          ▶ Google Play で入手
+        </div>
+      </a>
+    </div>
+
+    <div class="section">
+      <h2>🔗 リンク / Links</h2>
+      <div class="links">
+        <a href="https://hiroshi-studio-jp.blogspot.com" class="link-card">
+          <div class="link-card-content">
+            <div class="link-card-title">公式ブログ（日本語）</div>
+            <div class="link-card-desc">Hiroshi Studio Blog</div>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+        <a href="https://hiroshi-studio-en.blogspot.com" class="link-card">
+          <div class="link-card-content">
+            <div class="link-card-title">Official Blog (English)</div>
+            <div class="link-card-desc">Hiroshi Studio Blog</div>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>© 2026 Hiroshi Studio</p>
+      <p style="margin-top: 4px;">Contact: <a href="mailto:piro4413@gmail.com">piro4413@gmail.com</a></p>
+    </div>
+  </div>
+</body>
+</html>
