@@ -1,0 +1,5 @@
+# すべての検索エンジン・AI検索クローラー（Googlebot、OAI-SearchBot など）にサイト全体の閲覧を許可
+User-agent: *
+Allow: /
+
+Sitemap: https://piro4413-ui.github.io/sitemap.xml
