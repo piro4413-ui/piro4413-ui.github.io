@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Androidで写真を好きな順番に並べ替えて連番保存｜写真並べ替え・連番保存</title>
+<meta name="description" content="Androidで写真をドラッグして好きな順番に並べ替え、001、002、003…と連番を付けて一括保存できる無料アプリ「写真並べ替え・連番保存」の紹介。元の写真はそのまま、別ファイルとして保存します（広告あり）。">
+<link rel="canonical" href="https://piro4413-ui.github.io/photo-order/">
+<link rel="alternate" hreflang="ja" href="https://piro4413-ui.github.io/photo-order/">
+<link rel="alternate" hreflang="en" href="https://piro4413-ui.github.io/photo-order/en/">
+<link rel="alternate" hreflang="x-default" href="https://piro4413-ui.github.io/photo-order/en/">
+<link rel="icon" href="/photo-order/img/icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Androidで写真を好きな順番に並べ替えて連番保存｜写真並べ替え・連番保存">
+<meta property="og:description" content="Androidで写真をドラッグして好きな順番に並べ替え、001、002、003…と連番を付けて一括保存できる無料アプリ「写真並べ替え・連番保存」の紹介。元の写真はそのまま、別ファイルとして保存します（広告あり）。">
+<meta property="og:url" content="https://piro4413-ui.github.io/photo-order/">
+<meta property="og:image" content="https://piro4413-ui.github.io/photo-order/img/og-ja.png">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Hiroshi Studio">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "MobileApplication",
+ "name": "写真並べ替え・連番保存",
+ "alternateName": [
+  "Photo Order & Number",
+  "写真連番",
+  "PhotoOrder"
+ ],
+ "identifier": "com.hiroshistudio.photoorder",
+ "operatingSystem": "Android 10+",
+ "applicationCategory": "MultimediaApplication",
+ "description": "Androidで写真をドラッグして好きな順番に並べ替え、001、002、003…と連番を付けて一括保存できる無料アプリ「写真並べ替え・連番保存」の紹介。元の写真はそのまま、別ファイルとして保存します（広告あり）。",
+ "url": "https://piro4413-ui.github.io/photo-order/",
+ "downloadUrl": "https://play.google.com/store/apps/details?id=com.hiroshistudio.photoorder",
+ "installUrl": "https://play.google.com/store/apps/details?id=com.hiroshistudio.photoorder",
+ "image": "https://piro4413-ui.github.io/photo-order/img/icon.png",
+ "inLanguage": [
+  "ja",
+  "en",
+  "es",
+  "pt-BR",
+  "id",
+  "hi",
+  "fil",
+  "tr",
+  "de",
+  "fr"
+ ],
+ "offers": {
+  "@type": "Offer",
+  "price": "0",
+  "priceCurrency": "JPY"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "name": "Hiroshi Studio",
+  "url": "https://piro4413-ui.github.io/"
+ },
+ "screenshot": [
+  "https://piro4413-ui.github.io/photo-order/img/home-ja.webp",
+  "https://piro4413-ui.github.io/photo-order/img/drag-ja.webp",
+  "https://piro4413-ui.github.io/photo-order/img/large-ja.webp",
+  "https://piro4413-ui.github.io/photo-order/img/zoom-ja.webp",
+  "https://piro4413-ui.github.io/photo-order/img/result-ja.webp"
+ ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Androidで写真を好きな順番に並べ替えられますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "はい。選んだ写真が縦に並んだ一覧で表示され、写真を長押しするか左側のつまみを持って上下に動かすだけで、好きな順番に並べ替えられます。大きく表示に切り替えたり、タップして拡大したりして、写真を確認しながら並べられます。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "写真に001から連番を付けて保存できますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "はい。並べた順番どおりに、001、002、003… という3桁の連番をファイル名にして保存します。番号は必ず001から始まります。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "複数の写真をまとめて一括リネームできますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "元の写真の名前を書き換えるのではなく、連番の名前を付けた「コピー」を新しいフォルダにまとめて保存します。元の写真の名前と保存場所はそのまま残ります。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "元の写真はどうなりますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "元の写真は変更・上書き・削除しません。読み取るだけです。画像は再圧縮せず元の形式のまま別ファイルとして保存しますが、撮影場所などの位置情報は、Androidの写真選択の仕組みにより保存したファイルに含まれない場合があります。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "何枚まで並べ替えられますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "1回で最大100枚です。写真選択画面で一度に選べる枚数は端末によって異なりますが、「写真を追加」で何回かに分けて選べます。同じ写真を二重に追加することはありません。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "保存した写真はどこにありますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "端末の「Pictures/PhotoSequence」フォルダの中に、保存した日時の名前のフォルダが作られ、その中に保存されます。保存完了画面でも、連番と写真を確認でき、タップすると写真を開けます。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Googleフォトで連番の順番に並ばないのはなぜですか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Googleフォトなどのギャラリーアプリは、ファイル名ではなく撮影日時などで並べることがあるためです。このアプリはファイル名の連番を指定した順番に合わせますが、ギャラリーアプリの表示順や撮影日時は変更しません。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "写真はどこかに送信されますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "いいえ。写真の並べ替えと保存はすべて端末の中で行い、写真を外部のサーバーへ送信しません。写真へのアクセスは、Android標準の写真選択画面で選んだ写真だけです。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "無料で使えますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "無料でダウンロード・利用できます（広告あり）。並べ替え画面の下部にバナー広告が表示され、保存が完了したあとに全画面広告が表示されることがあります（3分以内に続けて表示されることはありません）。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "写真の加工や、動画の並べ替えはできますか？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "できません。このアプリは写真の並べ替えと連番保存に特化しています。トリミング、文字入れ、フィルターなどの編集機能や、動画の並べ替え、アルバムの作成、クラウドへのバックアップの機能はありません。"
+   }
+  }
+ ]
+}
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic","Meiryo",sans-serif;background:#F4F7FC;color:#1A1C1E;line-height:1.75}
+a{color:#1E5AA8}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 48px}
+nav.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;margin-bottom:20px}
+nav.top a{text-decoration:none}
+.langs a,.langs span{margin-left:10px}
+.langs span{font-weight:700}
+header.hero{background:linear-gradient(135deg,#174A9B,#2564C4);color:#fff;border-radius:20px;padding:28px 24px;display:flex;gap:20px;align-items:center}
+header.hero img{width:96px;height:96px;border-radius:22px;flex:none;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+header.hero h1{font-size:24px;line-height:1.4;margin-bottom:8px}
+header.hero p{font-size:15px;opacity:.95}
+.cta{display:inline-block;margin-top:18px;background:#fff;color:#174A9B;font-weight:700;padding:12px 24px;border-radius:999px;text-decoration:none}
+section{background:#fff;border-radius:16px;padding:24px;margin-top:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+h2{font-size:20px;margin-bottom:14px;color:#174A9B}
+h3{font-size:16px;margin:18px 0 6px}
+h3:first-of-type{margin-top:0}
+dl.facts{display:grid;grid-template-columns:max-content 1fr;gap:6px 18px}
+dl.facts dt{font-weight:700;color:#3F4650}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+figure img{width:100%;height:auto;border-radius:10px;border:1px solid #DDE3EC;display:block}
+figcaption{font-size:13px;color:#3F4650;margin-top:6px}
+.note{font-size:13px;color:#545F71;margin-top:12px}
+ol,ul{padding-left:1.4em}
+li{margin:4px 0}
+.howgrid{display:grid;grid-template-columns:1fr 220px;gap:20px;align-items:start}
+footer{margin-top:28px;font-size:13px;color:#545F71;text-align:center}
+footer a{margin:0 8px}
+@media (max-width:600px){header.hero{flex-direction:column;text-align:center}.ba{gap:10px}.howgrid{grid-template-columns:1fr}figcaption{font-size:12px}.howgrid figure{max-width:260px;margin:0 auto}header.hero h1{font-size:21px}}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
+pre{background:#F4F7FC;border-radius:8px;padding:12px 14px;font-size:14px;overflow-x:auto;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="top" aria-label="site">
+  <a href="/">← Hiroshi Studio トップ</a>
+  <span class="langs"><span lang="ja">日本語</span> <a href="/photo-order/en/" hreflang="en" lang="en">English</a></span>
+</nav>
+
+<header class="hero">
+  <img src="/photo-order/img/icon.png" width="96" height="96" alt="写真並べ替え・連番保存">
+  <div>
+    <h1>Androidで写真を好きな順番に並べて、001から連番で保存</h1>
+    <p>「写真並べ替え・連番保存」は、選んだ写真をドラッグで自由に並べ替え、その順番どおりに 001、002、003… と連番の名前を付けて、まとめて保存するAndroidアプリです。元の写真は変更せず、別のファイルとして保存します。</p>
+    <a class="cta" href="https://play.google.com/store/apps/details?id=com.hiroshistudio.photoorder">▶ Google Play で入手</a>
+  </div>
+</header>
+
+<section>
+  <h2>アプリの基本情報</h2>
+  <dl class="facts">
+<dt>アプリ名</dt><dd>写真並べ替え・連番保存（英語名：Photo Order &amp; Number／ホーム画面の表示名：写真連番）</dd>
+<dt>パッケージ名</dt><dd>com.hiroshistudio.photoorder</dd>
+<dt>対応OS</dt><dd>Android 10 以上</dd>
+<dt>料金</dt><dd>無料（広告あり）</dd>
+<dt>開発</dt><dd>Hiroshi Studio</dd>
+<dt>対応言語</dt><dd>日本語・英語・スペイン語・ポルトガル語（ブラジル）・インドネシア語・ヒンディー語・フィリピノ語・トルコ語・ドイツ語・フランス語</dd>
+<dt>配信</dt><dd><a href="https://play.google.com/store/apps/details?id=com.hiroshistudio.photoorder">Google Play</a></dd>
+  </dl>
+</section>
+
+<section>
+  <h2>使い方（3ステップ）</h2>
+  <div class="howgrid">
+    <ol>
+<li>「写真を選ぶ」から写真を選びます（最大100枚。あとから「写真を追加」もできます）。</li>
+<li>写真を長押しするか、左側のつまみ（≡）を持って上下に動かし、好きな順番に並べ替えます。</li>
+<li>「○枚を連番で保存」を押すと、並べた順番どおりに 001、002、003… の名前で保存されます。</li>
+    </ol>
+    <figure><img src="/photo-order/img/drag-ja.webp" width="480" height="853" alt="並べ替え画面：つまみや長押しで写真を上下に移動" loading="lazy"><figcaption>並べ替え画面：つまみや長押しで写真を上下に移動</figcaption></figure>
+  </div>
+</section>
+
+<section>
+  <h2>主な機能</h2>
+  <ul>
+<li>ドラッグ操作で写真の順番を自由に変更（長押し・つまみのどちらでも移動できます）</li>
+<li>並べた順番どおりに 001 から始まる3桁の連番を付けて一括保存</li>
+<li>1回で最大100枚まで</li>
+<li>「大きく表示／小さく表示」の切り替えと、タップでの全画面拡大</li>
+<li>元の写真は変更・削除せず、別ファイルとして保存</li>
+<li>JPEG・PNG・WebP・HEIC・AVIF・GIF に対応し、元の形式のまま再圧縮せずに保存</li>
+<li>保存するたびに「Pictures/PhotoSequence」内に日時別のフォルダを作成するので、以前の保存分を上書きしません</li>
+<li>写真の処理はすべて端末の中で行います</li>
+  </ul>
+</section>
+
+<section>
+  <h2>実際のアプリ画面</h2>
+  <div class="shots">
+    <figure><img src="/photo-order/img/home-ja.webp" width="480" height="853" alt="最初の画面：「写真を選ぶ」から始めます" loading="lazy"><figcaption>最初の画面：「写真を選ぶ」から始めます</figcaption></figure>
+    <figure><img src="/photo-order/img/large-ja.webp" width="480" height="853" alt="「大きく表示」で写真全体を確認しながら並べ替え" loading="lazy"><figcaption>「大きく表示」で写真全体を確認しながら並べ替え</figcaption></figure>
+    <figure><img src="/photo-order/img/zoom-ja.webp" width="480" height="741" alt="写真をタップすると全画面で拡大表示" loading="lazy"><figcaption>写真をタップすると全画面で拡大表示</figcaption></figure>
+    <figure><img src="/photo-order/img/result-ja.webp" width="480" height="853" alt="保存完了：001.jpg からの連番と保存先を確認できます" loading="lazy"><figcaption>保存完了：001.jpg からの連番と保存先を確認できます</figcaption></figure>
+  </div>
+  <p class="note">※ 画面はアプリを実際に動かして撮影したものです。写真は説明用のイラストです。広告の表示は省略しています。</p>
+</section>
+
+<section>
+  <h2>保存先とファイル名</h2>
+  <p>保存先は端末の <strong>Pictures/PhotoSequence</strong> フォルダ内に、保存した日時の名前で作られるフォルダです。</p><pre>Pictures/PhotoSequence/20261109_093000/
+  001.jpg
+  002.png
+  003.jpg</pre><p>拡張子は写真の元の形式に合わせます。JPEGとPNGが混ざっていても、それぞれの形式のまま保存されます。</p><p>保存中に1枚でも読み込めない写真があった場合は、その回の保存をすべて取り消します。番号が飛んだ不完全なフォルダは残さず、どの写真に問題があったかを表示します。並び順はそのまま残るので、写真を外すなどしてからもう一度保存できます。</p>
+</section>
+
+<section>
+  <h2>ギャラリーアプリでの表示順について</h2>
+  <p>Googleフォトなどのギャラリーアプリは、ファイル名ではなく撮影日時などの順番で写真を並べる場合があります。このアプリが保証するのは「並べた順番と、保存したファイルの連番（001、002…）が一致すること」です。ギャラリーアプリ上の表示順は変えられません。ファイル名の順で確認したいときは、ファイル管理アプリで保存先フォルダを開き、名前順で並べてください。</p>
+</section>
+
+<section>
+  <h2>よくある質問</h2>
+<h3>Androidで写真を好きな順番に並べ替えられますか？</h3>
+<p>はい。選んだ写真が縦に並んだ一覧で表示され、写真を長押しするか左側のつまみを持って上下に動かすだけで、好きな順番に並べ替えられます。大きく表示に切り替えたり、タップして拡大したりして、写真を確認しながら並べられます。</p>
+<h3>写真に001から連番を付けて保存できますか？</h3>
+<p>はい。並べた順番どおりに、001、002、003… という3桁の連番をファイル名にして保存します。番号は必ず001から始まります。</p>
+<h3>複数の写真をまとめて一括リネームできますか？</h3>
+<p>元の写真の名前を書き換えるのではなく、連番の名前を付けた「コピー」を新しいフォルダにまとめて保存します。元の写真の名前と保存場所はそのまま残ります。</p>
+<h3>元の写真はどうなりますか？</h3>
+<p>元の写真は変更・上書き・削除しません。読み取るだけです。画像は再圧縮せず元の形式のまま別ファイルとして保存しますが、撮影場所などの位置情報は、Androidの写真選択の仕組みにより保存したファイルに含まれない場合があります。</p>
+<h3>何枚まで並べ替えられますか？</h3>
+<p>1回で最大100枚です。写真選択画面で一度に選べる枚数は端末によって異なりますが、「写真を追加」で何回かに分けて選べます。同じ写真を二重に追加することはありません。</p>
+<h3>保存した写真はどこにありますか？</h3>
+<p>端末の「Pictures/PhotoSequence」フォルダの中に、保存した日時の名前のフォルダが作られ、その中に保存されます。保存完了画面でも、連番と写真を確認でき、タップすると写真を開けます。</p>
+<h3>Googleフォトで連番の順番に並ばないのはなぜですか？</h3>
+<p>Googleフォトなどのギャラリーアプリは、ファイル名ではなく撮影日時などで並べることがあるためです。このアプリはファイル名の連番を指定した順番に合わせますが、ギャラリーアプリの表示順や撮影日時は変更しません。</p>
+<h3>写真はどこかに送信されますか？</h3>
+<p>いいえ。写真の並べ替えと保存はすべて端末の中で行い、写真を外部のサーバーへ送信しません。写真へのアクセスは、Android標準の写真選択画面で選んだ写真だけです。</p>
+<h3>無料で使えますか？</h3>
+<p>無料でダウンロード・利用できます（広告あり）。並べ替え画面の下部にバナー広告が表示され、保存が完了したあとに全画面広告が表示されることがあります（3分以内に続けて表示されることはありません）。</p>
+<h3>写真の加工や、動画の並べ替えはできますか？</h3>
+<p>できません。このアプリは写真の並べ替えと連番保存に特化しています。トリミング、文字入れ、フィルターなどの編集機能や、動画の並べ替え、アルバムの作成、クラウドへのバックアップの機能はありません。</p>
+</section>
+
+<section>
+  <h2>できないこと</h2>
+  <ul>
+<li>元の写真のファイル名を直接変更すること（連番を付けたコピーを保存します）</li>
+<li>ギャラリーアプリでの表示順や、写真の撮影日時の変更</li>
+<li>トリミング・文字入れ・フィルターなどの写真編集</li>
+<li>動画の並べ替え</li>
+<li>iPhone（iOS）での利用</li>
+  </ul>
+  <p style="margin-top:16px"><a class="cta" style="background:#1E5AA8;color:#fff;margin-top:0" href="https://play.google.com/store/apps/details?id=com.hiroshistudio.photoorder">▶ Google Play で入手（無料）</a></p>
+</section>
+
+<section>
+  <h2>Hiroshi Studio のほかのアプリ</h2>
+  <p><a href="/screenshot-middle-cut/">スクショ中間カット</a>：長いスクリーンショットの真ん中の不要な部分を消して、上下をつなげて保存するAndroidアプリ</p>
+</section>
+
+<footer>
+  <p><a href="/">Hiroshi Studio トップ</a><a href="https://sites.google.com/view/hiroshi-studio-privacy/">プライバシーポリシー</a><a href="https://play.google.com/store/apps/details?id=com.hiroshistudio.photoorder">Google Play</a></p>
+  <p style="margin-top:6px">© 2026 Hiroshi Studio</p>
+</footer>
+</div>
+</body>
+</html>
