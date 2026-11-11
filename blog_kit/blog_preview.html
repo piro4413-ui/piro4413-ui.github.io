@@ -1,0 +1,242 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ブログ記事プレビュー</title><style>body{font-family:sans-serif;max-width:760px;margin:0 auto;padding:16px;line-height:1.9;color:#222;background:#fff}h2{border-left:6px solid #1F2A44;padding-left:10px;margin-top:2em}code{background:#f1f1f1;padding:1px 4px}</style></head><body><h1>Google Playの24言語ストア登録を「ダブルクリック1回」にした話【まっさらな状態からの完全手順＋ツール付き】</h1><div style="text-align:center;margin:1.2em 0"><img src="play-uploader/01_hero_24langs.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p>個人でAndroidアプリを作っている、Hiroshi Studio のとみーです。</p>
+<p>先日、新しいアプリ「スクショ一括目隠し」を <strong>24言語対応</strong> で Google Play に出しました。アプリ本体の翻訳はAIに手伝ってもらえば何とかなります。大変だったのは、その後の <strong>ストアへの登録作業</strong> でした。</p>
+<p>1つの言語につき、Play Console に登録するものは次のとおりです。</p>
+<ul>
+<li>アプリ名</li>
+<li>簡単な説明</li>
+<li>詳しい説明</li>
+<li>スクショ（5枚）</li>
+<li>フィーチャーグラフィック（ストアの横長のバナー画像）</li>
+</ul>
+<p>これが24言語ぶんです。画面を切り替えて、コピーして、貼り付けて、画像を選んで……と数えると、<strong>約200回の手作業</strong> になります。</p>
+<p>さすがにやっていられないので、Google が開発者向けに用意している仕組み（Google Play Developer API）を使って、<strong>ダブルクリック1回で全言語をまとめて登録するツール</strong> を作りました（AIの Claude と相談しながら作っています）。</p>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/17_cmd_success.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">黒い画面に「完了しました」と出れば、Play Console に全部入っています</p>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/19_play_24langs.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">Play Console の「公開の概要」に、言語が次々と追加されていきます</p>
+<h2>この記事でできること</h2>
+<ul>
+<li>各言語の <strong>文章・スクショ・フィーチャーグラフィック・アイコン</strong> を、まとめて Google Play に登録できるようになります</li>
+<li>次のアプリからは、素材フォルダを差し替えて <strong>ダブルクリックするだけ</strong> になります</li>
+<li>途中で失敗しても Google Play には何も反映されないので、安心して試せます</li>
+</ul>
+<h2>こんな人向けです</h2>
+<ul>
+<li>Google Play にアプリを出している（これから出す）個人開発者</li>
+<li>多言語対応したいけれど、ストア登録の手間がネックになっている人</li>
+<li>プログラミングは初心者でも大丈夫です。<strong>黒い画面（コマンド）の操作はありません</strong>。ファイルをダブルクリックするだけです</li>
+</ul>
+<h2>必要なもの</h2>
+<ul>
+<li>Windows パソコン（Windows 10 / 11）</li>
+<li>Google Play Console の開発者アカウント</li>
+<li>各言語の文章とスクショ（翻訳や画像づくりは、この記事の範囲外です）</li>
+</ul>
+<h2>正直に書いておくこと</h2>
+<p>最初の準備（Google Cloud と Play Console の設定）は <strong>30分〜1時間</strong> ほどかかります。しかも、Google の英語の説明を読んでも分かりにくいところで、私は <strong>3回つまずきました</strong>。</p>
+<p>この記事では、その <strong>つまずいた画面と、抜け出し方</strong> もすべてスクショ付きで載せています。2回目以降は、ダブルクリックするだけです。</p>
+<p>ツールは <strong>無料</strong> で配布しています。役に立ったら、記事の最後の Ko-fi から応援してもらえるとうれしいです。</p>
+<h2>全体の流れ</h2>
+<p>最初の1回だけやる準備（STEP 1〜6）と、毎回やること（STEP 7〜8）に分かれています。</p>
+<ol>
+<li>Play Console でアプリを作る</li>
+<li>ツールをダウンロードして、Python を入れる</li>
+<li>Google Cloud でプロジェクトを作り、API をオンにする</li>
+<li>ロボット用のアカウント（サービスアカウント）と鍵を作る</li>
+<li>【つまずき①】鍵が作れないときの解除方法</li>
+<li>Play Console でロボットに権限を渡す</li>
+<li>素材を用意して、まず1言語だけ送る</li>
+<li>全言語を送る</li>
+</ol>
+<h2>ツールのダウンロード</h2>
+<p style="text-align:center"><a href="play-uploader/PlayUploader.zip" style="display:inline-block;background:#1F2A44;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:bold">ツールをダウンロード（PlayUploader.zip・無料）</a></p>
+<p>ZIPファイルを右クリックして「すべて展開」を選び、デスクトップなどに置いてください。中身は次のとおりです。</p>
+<ul>
+<li><code>1_setup.bat</code>：最初の1回だけ。必要な部品をインストールします</li>
+<li><code>2_check.bat</code>：点検だけ（何も送りません）</li>
+<li><code>3_upload_test_language.bat</code>：1言語だけお試しで送ります</li>
+<li><code>4_upload_all_languages.bat</code>：全言語を送ります</li>
+<li><code>settings.txt</code>：設定ファイル</li>
+<li><code>store</code> フォルダ：素材を入れるフォルダ（見本入り）</li>
+<li><code>README.txt</code>：説明書</li>
+</ul>
+<h2>STEP 1　Play Console でアプリを作る</h2>
+<p>まだアプリを作っていない場合は、Play Console の「アプリを作成」から作ります。</p>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/02_play_create_app.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<ul>
+<li><strong>パッケージ名</strong>：アプリ本体と同じもの（<code>com.～</code>）を入れます。<strong>後から変えられない</strong> ので注意してください</li>
+<li><strong>デフォルトの言語</strong>：日本語向けのアプリなら「日本語 – ja-JP」にしておくのがおすすめです。ツールは、この言語にアイコンを登録します</li>
+</ul>
+<p>ポイント：アプリ本体（AAB）を、先に <strong>内部テストへ1回アップロードしておく</strong> と安心です。AAB がまだ1つもないアプリだと、Google 側で受け付けてもらえない場合があります。</p>
+<h2>STEP 2　Python を入れて、ツールの準備をする</h2>
+<p>ツールを動かすために「Python」という部品を入れます。</p>
+<ol>
+<li><a href="https://www.python.org/downloads/" target="_blank" rel="noopener">https://www.python.org/downloads/</a> を開き、黄色い「Download Python」ボタンを押します</li>
+<li>ダウンロードしたファイルを実行します</li>
+<li><strong>最初の画面の一番下にある「Add python.exe to PATH」に必ずチェックを入れて</strong> から、「Install Now」を押します</li>
+<li>展開したツールのフォルダの <code>1_setup.bat</code> をダブルクリックし、「DONE」と出たら完了です</li>
+<li>続けて <code>2_check.bat</code> をダブルクリックし、「点検OK」と出ることを確認します（見本の素材で点検されます）</li>
+</ol>
+<p>ポイント：青い画面で「WindowsによってPCが保護されました」と出たら、「詳細情報」→「実行」を押してください。ネットからダウンロードしたファイルには、いつも出る警告です。</p>
+<h2>STEP 3　Google Cloud でプロジェクトを作る</h2>
+<p>ツールが Play Console を操作するための「入口」を、Google Cloud に作ります。お金はかかりません。</p>
+<ol>
+<li><a href="https://console.cloud.google.com/" target="_blank" rel="noopener">https://console.cloud.google.com/</a> を、<strong>Play Console と同じ Google アカウントで</strong> 開きます</li>
+<li>初めての場合は利用規約に同意します（「無料トライアル」の案内は無視してかまいません）</li>
+<li>画面上部のプロジェクト名の部分を押し、「<strong>新しいプロジェクト</strong>」を押します</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/04_cloud_new_project.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<ol>
+<li>名前は <code>my-play-uploader</code> など、分かりやすいものにして「作成」を押します</li>
+<li><strong>画面上部のプロジェクト名が、今作ったものに切り替わっているか必ず確認してください</strong>。ここが別のプロジェクトのままだと、違う場所に設定してしまいます</li>
+</ol>
+<h3>API をオンにする</h3>
+<ol>
+<li>上の検索欄に「<strong>Google Play Android Developer API</strong>」と入力し、出てきたものを開きます</li>
+<li>青い「<strong>有効にする</strong>」を押します</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/11_api_enabled.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">「APIとサービス」の一覧に Google Play Android Developer API が出ていれば OK です</p>
+<h2>STEP 4　ロボット用のアカウントと鍵を作る</h2>
+<p>Play Console を人の代わりに操作する、ロボット用のアカウント（正式名は「サービスアカウント」）を作ります。</p>
+<ol>
+<li>左上の「≡」メニューから「<strong>IAMと管理</strong>」→「<strong>サービス アカウント</strong>」を開きます</li>
+<li>「<strong>＋サービス アカウントを作成</strong>」を押します</li>
+<li>名前に <code>play-uploader</code> と入れて「作成して続行」を押します。役割（ロール）の設定は飛ばして「完了」で大丈夫です</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/05_service_account.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<ol>
+<li>一覧に出た <code>play-uploader@～.iam.gserviceaccount.com</code> という <strong>メールアドレスをコピーして、メモ帳に貼っておきます</strong>（STEP 6 で使います）</li>
+</ol>
+<h3>鍵ファイルを作る</h3>
+<ol>
+<li>作ったアカウントのメールアドレスをクリックし、上のタブから「<strong>鍵</strong>」を開きます</li>
+<li>「<strong>鍵を追加</strong>」→「<strong>新しい鍵を作成</strong>」→「<strong>JSON</strong>」→「作成」の順に押します</li>
+<li>ファイルが1つダウンロードされます</li>
+</ol>
+<p><strong>ここでエラーが出たら、次の STEP 5 へ。</strong> 出なければ STEP 5 は飛ばしてください。</p>
+<h3>鍵ファイルをツールのフォルダに置く</h3>
+<ol>
+<li>エクスプローラーの上部の「<strong>表示</strong>」タブで、「<strong>ファイル名拡張子</strong>」にチェックを入れます（これをしないと、名前を変えたときに <code>key.json.json</code> になってしまうことがあります）</li>
+<li>ダウンロードしたファイルを、ツールのフォルダに移します</li>
+<li>右クリック →「名前の変更」で、名前を <strong><code>key.json</code></strong> に変えます</li>
+</ol>
+<p><strong>注意：key.json はパスワードと同じです。</strong> 人に渡したり、GitHub などに上げたりしないでください。</p>
+<h2>STEP 5　【つまずき①】「サービス アカウント キーの作成が無効になっています」</h2>
+<p>私はここで、最初につまずきました。</p>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/06_key_blocked.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p>Google Cloud に「<strong>組織</strong>」がある場合（会社や屋号で Google Workspace などを使っていると、いつの間にか作られていることがあります）、Google が安全のために <strong>鍵の作成を最初から止めている</strong> ことがあります。</p>
+<p>組織の持ち主であれば、設定を変えて解除できます。<strong>組織全体ではなく、今回のプロジェクトだけ</strong> 解除するのが安全です。</p>
+<h3>① 自分に「組織ポリシー管理者」の権限を付ける</h3>
+<p>組織の持ち主でも、この権限は最初から付いていません。</p>
+<ol>
+<li>画面上部のプロジェクト名を押し、一覧から <strong>組織</strong>（種類が「組織」の行）を選びます</li>
+<li>左メニューの「<strong>IAM</strong>」を開きます</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/07_org_iam_before.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">最初は「組織ポリシー管理者」がありません</p>
+<ol>
+<li>自分の行の <strong>えんぴつのアイコン</strong> を押し、「<strong>＋別のロールを追加</strong>」を押します</li>
+<li>検索欄に「<strong>組織ポリシー管理者</strong>」と入力して選びます</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/08_role_search.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">「組織 <strong>の</strong> ポリシー」と入力すると出てきません。「の」を入れずに「組織ポリシー管理者」です（英語なら policyAdmin）</p>
+<ol>
+<li>「保存」を押します</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/09_org_iam_after.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">ロールの一覧に「組織ポリシー管理者」が増えれば OK です</p>
+<h3>② 今回のプロジェクトだけ、鍵の作成を許可する</h3>
+<ol>
+<li>画面上部で、<strong>STEP 3 で作ったプロジェクトに切り替えます</strong>（ここが一番大事です）</li>
+<li>左メニューの「<strong>組織のポリシー</strong>」を開きます</li>
+<li>「<strong>アクティブなポリシーを表示</strong>」を押し、一覧の上の「フィルタ」欄に <code>disableServiceAccountKeyCreation</code> と入力します</li>
+</ol>
+<p>ポイント：画面の一番上にある大きな検索欄に入力しても、ポリシーは出てきません。ポリシー一覧のすぐ上にある「フィルタ」欄に入力してください。私はここでも迷いました。</p>
+<ol>
+<li>「<strong>サービス アカウント キーの作成を無効化</strong>」を押し、「<strong>ポリシーを管理</strong>」を押します</li>
+<li>「ポリシーのソース」で「<strong>親のポリシーをオーバーライドする</strong>」を選びます</li>
+<li>「ルールを追加」→「適用」を「<strong>オフ</strong>」にして「完了」を押します</li>
+<li>一番下の「<strong>ポリシーを設定</strong>」を押します</li>
+<li>1〜2分待ってから、STEP 4 の鍵の作成をもう一度試します</li>
+</ol>
+<p>似た名前で <code>managed</code> が付いたポリシーも出てきた場合は、同じようにオフにしてください。</p>
+<h2>STEP 6　Play Console でロボットに権限を渡す</h2>
+<ol>
+<li>Play Console の左メニューで「<strong>アカウントの管理</strong>」→「<strong>ユーザーと権限</strong>」を開きます（アプリの中ではなく、アカウント全体の設定です）</li>
+<li>「<strong>新しいユーザーを招待</strong>」を押します</li>
+<li>メールアドレス欄に、STEP 4 でメモしたロボットのアドレスを貼り付けます</li>
+<li>「<strong>アカウントの権限</strong>」タブで、次の3つにチェックを入れます</li>
+<div style="margin-left:1.6em">・<strong>アプリ情報の閲覧（読み取り専用）</strong></div>
+<div style="margin-left:1.6em">・<strong>テスト版トラックとしてのアプリのリリース</strong></div>
+<div style="margin-left:1.6em">・<strong>ストアでの表示の管理</strong></div>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/13_play_permissions.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<ol>
+<li>「ユーザーを招待」→「招待状を送信」を押します</li>
+</ol>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/12_play_users.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">一覧にロボットのアドレスが「有効」で出れば OK です</p>
+<p>ポイント：アプリ単位ではなく「アカウントの権限」に付けておくと、<strong>次のアプリでも設定し直さずに使えます</strong>。また、上の3つには「製品版として公開する」権限は含まれていないので、ロボットが勝手にアプリを公開することはありません。</p>
+<h2>STEP 7　素材を用意して、1言語だけ送ってみる</h2>
+<h3>素材フォルダの形</h3>
+<p><code>store</code> フォルダの中を、自分のアプリの素材に差し替えます。</p>
+<ul>
+<li><code>store\listing\listing.csv</code>：文章（Excel で編集できます）</li>
+<div style="margin-left:1.6em">・列は <code>language</code>（言語コード）、<code>title</code>（アプリ名・30文字まで）、<code>short_description</code>（簡単な説明・80文字まで）、<code>full_description</code>（詳しい説明・4000文字まで）</div>
+<div style="margin-left:1.6em">・保存するときは「<strong>CSV UTF-8（コンマ区切り）</strong>」を選んでください</div>
+<li><code>store\ja-JP\</code> のように、<strong>言語コードの名前のフォルダ</strong> を言語ごとに作ります</li>
+<div style="margin-left:1.6em">・<code>phone_01.png</code>～<code>phone_08.png</code>：スクショ（2〜8枚、PNG か JPG）</div>
+<div style="margin-left:1.6em">・<code>feature.png</code>：フィーチャーグラフィック（1024×500、なくても可）</div>
+<li><code>store\icon.png</code>：アイコン（512×512、なくても可）</li>
+</ul>
+<p>言語コードの例：日本語 <code>ja-JP</code>、英語 <code>en-US</code>、スペイン語（中南米）<code>es-419</code>、ポルトガル語（ブラジル）<code>pt-BR</code>、ドイツ語 <code>de-DE</code>、フランス語 <code>fr-FR</code>、韓国語 <code>ko-KR</code>、中国語（簡体字）<code>zh-CN</code>、中国語（繁体字）<code>zh-TW</code>、ヒンディー語 <code>hi-IN</code>、インドネシア語 <code>id</code>、アラビア語 <code>ar</code>、タイ語 <code>th</code>、ベトナム語 <code>vi</code></p>
+<h3>設定ファイルを書き換える</h3>
+<p><code>settings.txt</code> をメモ帳で開き、<code>PACKAGE=</code> の後ろを自分のアプリのパッケージ名に書き換えて保存します。</p>
+<pre style="background:#f4f6fa;padding:12px;border-radius:6px;overflow:auto">PACKAGE=com.example.yourapp
+KEY=key.json
+ASSETS=store
+ICON_LANG=ja-JP
+TEST_LANG=ja-JP</pre>
+<h3>点検して、1言語だけ送る</h3>
+<ol>
+<li><code>2_check.bat</code> をダブルクリックし、「<strong>点検OK</strong>」と出るのを確認します。文字数オーバーや画像サイズの間違いがあれば、ここで教えてくれます</li>
+<li><code>3_upload_test_language.bat</code> をダブルクリックし、「よろしいですか？」と出たら <code>y</code> を押して Enter を押します</li>
+<li>「<strong>完了しました</strong>」と出たら、Play Console の「メインのストアの掲載情報」で中身を確認します</li>
+</ol>
+<h2>STEP 7.5　【つまずき②③】うまくいかないとき</h2>
+<h3>つまずき②：「権限がありません」と出る</h3>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/14_cmd_403.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p>STEP 6 で権限を渡しても、<strong>Google 側に反映されるまで時間がかかります</strong>。早ければ数十分、遅いと24〜48時間かかることがあるそうです。</p>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/16_cmd_commit_403.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">文章や画像は「OK」なのに、最後の確定（コミット）だけ断られることもあります。これも反映待ちのサインでした</p>
+<p>私の場合は、STEP 6 の権限（特に「テスト版トラックとしてのアプリのリリース」）を付け足してから <strong>1時間ほど待ったら、そのまま通りました</strong>。</p>
+<p>失敗しても Google Play には何も反映されないので、何度試しても大丈夫です。1日待ってもだめな場合は、ロボットに一時的に「<strong>管理者（すべての権限）</strong>」を付けて試し、成功したら元の権限に戻す、という方法もあります。</p>
+<h3>つまずき③：画面が止まったように見える</h3>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/15_cmd_select_freeze.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p>ウィンドウのタイトルに「<strong>選択</strong>」と出ていたら、それが原因です。黒い画面の中をクリックすると、Windows はこの状態になって処理が一時停止します。<strong>Esc キーを1回</strong> 押すと動き出します。送信中は、黒い画面の中をクリックしないでください。</p>
+<h2>STEP 8　全言語を送る</h2>
+<p>1言語で成功したら、<code>4_upload_all_languages.bat</code> をダブルクリックして <code>y</code> を押すだけです。24言語でも数分で終わります。</p>
+<div style="text-align:center;margin:1.2em 0"><img src="play-uploader/18_play_listing_done.png" alt="" style="max-width:100%;height:auto;border:1px solid #e3e6ee;border-radius:8px" loading="lazy"></div>
+<p style="text-align:center;font-size:90%;color:#666;margin-top:-.6em">Play Console のダッシュボードで「ストアの掲載情報を設定する」にチェックが付きます</p>
+<p><strong>次のアプリからは</strong>、<code>store</code> フォルダの中身を差し替えて、<code>settings.txt</code> のパッケージ名を書き換え、STEP 7 と 8 をやるだけです。</p>
+<h2>おまけ：自動化できないもの</h2>
+<p>Play Console の「アプリのコンテンツ」にある次の申告は、Google が API を用意していないので、手で入力する必要があります。</p>
+<ul>
+<li>コンテンツのレーティング</li>
+<li>ターゲット ユーザー</li>
+<li>広告・ログインの詳細</li>
+<li>金融取引機能・健康・行政アプリ</li>
+</ul>
+<p>ただ、データセーフティだけは、別のアプリで入力したものを <strong>CSV で書き出して、新しいアプリに読み込む</strong> ことができます。シリーズでアプリを出すなら、これも覚えておくと楽になります。</p>
+<p>また、2026年5月の Google I/O で、Play Console に Gemini による <strong>掲載情報の自動翻訳</strong> が発表されました。ただし、スクショの中の文字やアプリ画面は翻訳されません。「文章の翻訳は Gemini で下書き、スクショは自分で用意して、登録はこのツールでまとめて」という組み合わせがおすすめです。</p>
+<h2>さいごに</h2>
+<p>最初の準備さえ終われば、24言語の登録はダブルクリック1回です。私は、つまずいた3か所を抜けるのに半日かかりました。この記事が、その半日の節約になればうれしいです。</p>
+<p>最後に宣伝です。今回24言語で出したのは「<strong>スクショ一括目隠し</strong>」というアプリです。たくさんのスクショの同じ場所（ステータスバーや広告、ユーザー名など）を、一度にまとめて黒塗りできます。こういう解説記事のスクショづくりにも便利なので、よければ使ってみてください。</p>
+<p style="text-align:center"><a href="https://play.google.com/store/apps/details?id=com.hiroshistudio.batchredact" target="_blank" rel="noopener">Google Play で「スクショ一括目隠し」を見る</a></p>
+<p>不明な点や、画面が変わっていて分からないところがあれば、コメントで教えてください。</p>
+<h2>応援のお願い</h2>
+<p>このツールと記事は無料です。もし時間の節約になったら、Ko-fi でコーヒー1杯分の応援をしてもらえると、次のツールづくりの励みになります。</p>
+<p style="text-align:center"><a href="https://ko-fi.com/hiroshistudio" target="_blank" rel="noopener" style="display:inline-block;background:#FF5E5B;color:#fff;padding:14px 28px;border-radius:10px;text-decoration:none;font-weight:bold">☕ Ko-fi で応援する</a></p>
+<p>※ 画面や手順は、2026年11月時点のものです。</p></body></html>
